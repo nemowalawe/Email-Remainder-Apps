@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Reminder - Deadline Pengumpulan File</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --destructive: #dc2626;
+            --destructive-hover: #b91c1c;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #e5e7eb;
+            --muted: #6b7280;
+            --background: #ffffff;
+            --foreground: #111827;
+            --card: #ffffff;
+            --card-foreground: #111827;
+            --secondary: #f3f4f6;
+            --secondary-foreground: #374151;
+            --ring: #2563eb;
+            --radius: 0.5rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--foreground);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-description {
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
+        }
+
+        .form-label .required {
+            color: var(--destructive);
+            margin-left: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            outline: none;
+            transition: all 0.2s;
+            background: var(--background);
+        }
+
+        .form-input:focus {
+            border-color: var(--ring);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input:disabled {
+            background-color: var(--secondary);
+            cursor: not-allowed;
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 0.875rem;
+            color: var(--foreground);
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--foreground);
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background: var(--secondary);
+        }
+
+        .btn-destructive {
+            background: var(--destructive);
+            color: white;
+        }
+
+        .btn-destructive:hover:not(:disabled) {
+            background: var(--destructive-hover);
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .reminder-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .reminder-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            background: var(--background);
+            transition: all 0.2s;
+        }
+
+        .reminder-item:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .reminder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .reminder-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .reminder-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-scheduled {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-sent {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .reminder-details {
+            display: grid;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .reminder-detail {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reminder-detail strong {
+            color: var(--foreground);
+            min-width: 100px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0 0;
+            color: white;
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+
+        .test-email-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .test-email-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .test-email-form .form-input {
+            flex: 1;
+        }
+
+        .recurring-options {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: var(--radius);
+            display: none;
+        }
+
+        .recurring-options.active {
+            display: block;
+        }
+
+        .day-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .day-btn {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .day-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .day-btn:hover:not(.selected) {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .test-email-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 Vendor Reminder</h1>
+            <p>Sistem reminder deadline pengumpulan file pengadaan</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Form Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Buat Reminder Baru</h2>
+                    <p class="card-description">Isi form di bawah untuk menjadwalkan reminder email</p>
+                </div>
+                <div class="card-content">
+                    <div id="alert-container"></div>
+
+                    <form id="reminder-form">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Nama Vendor <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="vendorName" 
+                                class="form-input" 
+                                placeholder="Contoh: PT. Maju Bersama"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Email Vendor <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="email" 
+                                id="vendorEmail" 
+                                class="form-input" 
+                                placeholder="vendor@email.com"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Nama Proyek/Pengadaan <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="projectName" 
+                                class="form-input" 
+                                placeholder="Contoh: Pengadaan Alat Tulis Kantor"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Deadline Pengumpulan <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="datetime-local" 
+                                id="deadline" 
+                                class="form-input"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Waktu Kirim Reminder <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="datetime-local" 
+                                id="reminderTime" 
+                                class="form-input"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Catatan Tambahan</label>
+                            <textarea 
+                                id="notes" 
+                                class="form-input form-textarea" 
+                                placeholder="Catatan atau instruksi tambahan untuk vendor (opsional)"
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="sendImmediate">
+                                <label for="sendImmediate">Kirim email sekarang (tidak perlu scheduling)</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="isRecurring">
+                                <label for="isRecurring">Aktifkan reminder berulang</label>
+                            </div>
+                        </div>
+
+                        <div class="recurring-options" id="recurringOptions">
+                            <div class="form-group">
+                                <label class="form-label">Tipe Pengulangan</label>
+                                <select id="recurringType" class="form-input">
+                                    <option value="daily">Setiap Hari</option>
+                                    <option value="weekly">Setiap Minggu</option>
+                                    <option value="custom">Pilih Hari Tertentu</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="customDaysGroup" style="display: none;">
+                                <label class="form-label">Pilih Hari</label>
+                                <div class="day-selector">
+                                    <button type="button" class="day-btn" data-day="1">Senin</button>
+                                    <button type="button" class="day-btn" data-day="2">Selasa</button>
+                                    <button type="button" class="day-btn" data-day="3">Rabu</button>
+                                    <button type="button" class="day-btn" data-day="4">Kamis</button>
+                                    <button type="button" class="day-btn" data-day="5">Jumat</button>
+                                    <button type="button" class="day-btn" data-day="6">Sabtu</button>
+                                    <button type="button" class="day-btn" data-day="0">Minggu</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Jam Pengiriman</label>
+                                <input type="time" id="recurringTime" class="form-input" value="09:00">
+                            </div>
+
+                            <div class="alert alert-info" style="font-size: 0.8rem;">
+                                💡 Reminder akan dikirim secara otomatis sesuai jadwal yang dipilih mulai dari sekarang hingga deadline.
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+                                💾 Simpan & Jadwalkan
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                🔄 Reset Form
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Test Email Section -->
+                    <div class="test-email-section">
+                        <h3 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem;">
+                            🧪 Test Konfigurasi Email
+                        </h3>
+                        <div class="test-email-form">
+                            <input 
+                                type="email" 
+                                id="testEmail" 
+                                class="form-input" 
+                                placeholder="Email untuk test"
+                            >
+                            <button type="button" class="btn btn-outline btn-sm" id="testEmailBtn">
+                                Kirim Test
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Daftar Reminder</h2>
+                    <p class="card-description">Semua reminder yang telah dibuat</p>
+                </div>
+                <div class="card-content">
+                    <div id="reminder-list" class="reminder-list">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <p>Belum ada reminder</p>
+                            <p style="font-size: 0.75rem; margin-top: 0.5rem;">Reminder yang Anda buat akan muncul di sini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 Vendor Reminder System | Powered by Nodemailer</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
