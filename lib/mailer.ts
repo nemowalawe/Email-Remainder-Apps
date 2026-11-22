@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { IReminder } from './models/Reminder';
+import type { IReminder } from './models/Reminder.js';
 
 const TIMEZONE = 'Asia/Jakarta';
 

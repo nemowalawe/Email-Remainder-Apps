@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { connectDB } from '../../lib/db';
-import { Reminder } from '../../lib/models/Reminder';
-import { createReminderSchema, searchQuerySchema } from '../../lib/validation';
-import { sendReminderEmail } from '../../lib/mailer';
-import { calculateNextRunAt } from '../../lib/schedule';
+import { connectDB } from '../../lib/db.js';
+import { Reminder } from '../../lib/models/Reminder.js';
+import { createReminderSchema, searchQuerySchema } from '../../lib/validation.js';
+import { sendReminderEmail } from '../../lib/mailer.js';
+import { calculateNextRunAt } from '../../lib/schedule.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   await connectDB();

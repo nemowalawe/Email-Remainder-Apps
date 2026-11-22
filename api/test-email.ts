@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { testEmailSchema } from '../lib/validation';
-import { sendTestEmail } from '../lib/mailer';
+import { testEmailSchema } from '../lib/validation.js';
+import { sendTestEmail } from '../lib/mailer.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

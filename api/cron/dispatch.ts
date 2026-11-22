@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { connectDB } from '../../lib/db';
-import { Reminder } from '../../lib/models/Reminder';
-import { sendReminderEmail } from '../../lib/mailer';
-import { calculateNextRecurringRun } from '../../lib/schedule';
+import { connectDB } from '../../lib/db.js';
+import { Reminder } from '../../lib/models/Reminder.js';
+import { sendReminderEmail } from '../../lib/mailer.js';
+import { calculateNextRecurringRun } from '../../lib/schedule.js';
 
 const CRON_SECRET = process.env.CRON_SECRET;
 const MAX_REMINDERS_PER_RUN = 20;

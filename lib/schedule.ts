@@ -1,5 +1,5 @@
 import { DateTime, Settings } from 'luxon';
-import { IRecurrence } from './models/Reminder';
+import type { IRecurrence } from './models/Reminder.js';
 
 // Set default timezone
 Settings.defaultZone = 'Asia/Jakarta';
