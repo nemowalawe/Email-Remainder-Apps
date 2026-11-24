@@ -186,6 +186,20 @@ describe('calculateNextRecurringRun', () => {
   });
 
   describe('days recurrence', () => {
+    it('should find next consecutive day (e.g. Monday to Tuesday)', () => {
+      // Last run on Monday (Dec 16), next should be Tuesday (Dec 17)
+      const lastRun = new Date('2024-12-16T02:00:00Z'); // Monday 09:00 WIB
+      const deadline = new Date('2024-12-25T10:00:00Z');
+      const recurrence = createRecurrence('days', [1, 2, 3], '09:00'); // Mon, Tue, Wed
+
+      const result = calculateNextRecurringRun(lastRun, recurrence, deadline);
+
+      expect(result).not.toBeNull();
+      const resultDt = DateTime.fromJSDate(result!).setZone('Asia/Jakarta');
+      expect(resultDt.weekday).toBe(2); // Tuesday
+      expect(resultDt.day).toBe(17);
+    });
+
     it('should find next day in the same week', () => {
       // Last run on Monday (Dec 16), next should be Wednesday (Dec 18)
       const lastRun = new Date('2024-12-16T02:00:00Z'); // Monday 09:00 WIB

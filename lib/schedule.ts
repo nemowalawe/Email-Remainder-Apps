@@ -184,8 +184,8 @@ export function calculateNextRecurringRun(
       
       const currentDay = nextRun.weekday % 7; // 0-6 (Sun-Sat)
       
-      // Find next matching day
-      let nextDay = sortedDays.find((day) => day > currentDay);
+      // Find next matching day (must be >= currentDay because nextRun was already advanced by 1 day)
+      let nextDay = sortedDays.find((day) => day >= currentDay);
       if (nextDay !== undefined) {
         // Same week
         const daysToAdd = nextDay - currentDay;
